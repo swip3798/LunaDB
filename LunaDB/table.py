@@ -30,7 +30,17 @@ class Table():
         '''
         Searches in the documents of a table
         '''
-        pass
+        with open(self.path, "r") as f:
+            while True:
+                entry = f.readline()
+                typ = self._check_entry(entry)
+                if typ == 1:
+                    continue
+                elif typ == 2:
+                    break
+                else:
+                    entry = json.loads(entry)
+            
     
     def upsert(self, row):
         '''
