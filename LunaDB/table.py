@@ -115,6 +115,9 @@ class Table():
             new_db += line
         os.remove(tmp)
     
+    def all(self):
+        return self.search(lambda x: True)
+    
     ###### Internal abstraction methods ########
 
     def _write_string(self, string):
