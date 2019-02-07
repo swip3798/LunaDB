@@ -24,12 +24,15 @@ class Table():
             raise DuplicateEntries
 
 
-    def insert_multiple(self, rows):
+    def insert_multiple(self, rows, strict = True):
         '''
         Insert multiple documents to table
         '''
         for idx, i in enumerate(rows):
-            res = self.search(lambda x: x[self.id_field] == i[self.id_field])
+            if strict:
+                res = self.search(lambda x: x[self.id_field] == i[self.id_field])
+            else:
+                res = 0
             if len(res) == 0:
                 rows[idx] = json.dumps(i, separators=(',',':'))
         self._write_strings(rows)
