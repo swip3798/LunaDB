@@ -8,7 +8,8 @@ class Table():
         self.name = name
         self.id_field = id_field
         self.path = path + name
-        open(self.path, "w").close()
+        if not os.path.isfile(self.path):
+            open(self.path, "w").close()
 
     def insert(self, row, strict = True):
         '''
@@ -57,11 +58,14 @@ class Table():
                     break
                 else:
                     entry = json.loads(line)
-                if filter_function(entry):
-                    f.seek(-len(line), 1)
-                    f.write("::".encode("utf-8"))
-                    f.seek(len(line) - 2, 1)
-                    res = True
+                try:
+                    if filter_function(entry):
+                        f.seek(-len(line), 1)
+                        f.write("::".encode("utf-8"))
+                        f.seek(len(line) - 2, 1)
+                        res = True
+                except:
+                    pass
         if auto_clean:
             self.clean()
         return res
@@ -83,8 +87,11 @@ class Table():
                     break
                 else:
                     entry = json.loads(entry)
-                if filter_function(entry):
-                    response.append(entry)
+                try:
+                    if filter_function(entry):
+                        response.append(entry)
+                except:
+                    pass
         return response
             
     
