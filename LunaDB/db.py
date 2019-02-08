@@ -11,3 +11,8 @@ class LunaDB():
         
     def table(self, name, id_field = None):
         return Table(self.path, name, id_field = id_field)
+
+    def drop_table(self, name):
+        del_path = self.path + name
+        os.remove(del_path)
+    
