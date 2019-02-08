@@ -1,2 +1,6 @@
 *.pyc
+*.txt
+*.egg-info
+*.whl
+*.tar.gz
 /build/

@@ -1,4 +1,5 @@
 from distutils.core import setup
+import setuptools
 
 setup(name='LunaDB',
       version='0.4.1',
