@@ -4,7 +4,7 @@ from .exceptions import DuplicateEntries, DocumentNotFound
 
 class Table():
 
-    def __init__(self, path, name, id_field):
+    def __init__(self, path, name, id_field = None):
         self.name = name
         self.id_field = id_field
         self.path = path + name
