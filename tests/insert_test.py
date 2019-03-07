@@ -1,4 +1,12 @@
 import unittest
+import shutil
+
+dir_path = "test_db"
 
 class InsertTests(unittest.TestCase):
-    pass
+    
+    def tearDown(self):
+        try:
+            shutil.rmtree(dir_path)
+        except:
+            pass

@@ -1,4 +1,13 @@
 import unittest
+import shutil
+
+dir_path = "test_db"
 
 class DeleteTests(unittest.TestCase):
-    pass
+    
+
+    def tearDown(self):
+        try:
+            shutil.rmtree(dir_path)
+        except:
+            pass
