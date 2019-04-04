@@ -3,4 +3,6 @@
 # LunaDB
 LunaDB is a document oriented file based database written in Python. It's designed on similar scenarios as [TinyDB](https://github.com/msiemens/tinydb), but with a better scaling with more documents and (hopefully) less memory usage.  
 ## Introduction
-LunaDB reads only one document at a time and doesn't save the whole database in one giant JSON. Instead it saves every document as an own JSON and seperates them by line breaks.
+LunaDB reads only one document at a time and doesn't save the whole database in one giant JSON. Instead it saves every document as an own JSON and seperates them by line breaks.  
+Main features from LunaDB:
+* Document based: 
