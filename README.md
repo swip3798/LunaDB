@@ -1,2 +1,2 @@
 # LunaDB
-Yeah I just like the name luna
+Document based database in pure Python
