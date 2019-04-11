@@ -7,17 +7,31 @@ class Table():
     def __init__(self, path, name, id_field = None):
         self.name = name
         self.id_field = id_field
+        if self.id_field == None:
+            self.auto_id = True
+            self.id_field = "_id"
+        else:
+            self.auto_id = False
         self.path = path + name
+        self.id_path = path + "ids/" + name 
         if not os.path.isfile(self.path):
             open(self.path, "w").close()
+        if not os.path.isfile(self.id_path) and self.auto_id:
+            f = open(self.id_path, "w")
+            f.write("0")
+            f.close()
 
     def insert(self, row, strict = True):
         '''
         Inserts a new document to table
-        If you use strict = False you can use it as insert_or_skip
+        If you use strict = False you can use it as an insert or skip
+
+        If you use auto_id, do not use the field "_id", it will be overwritten with the autoincrement id
         '''
         res = self.search(lambda x: x[self.id_field] == row[self.id_field])
         if len(res) == 0:
+            if self.auto_id:
+                row["_id"] = self._get_new_id()
             entry = json.dumps(row, separators=(',',':'))
             self._write_string(entry)
         elif strict:
@@ -34,6 +48,8 @@ class Table():
             else:
                 res = []
             if len(res) == 0:
+                if self.auto_id:
+                    i["_id"] = self._get_new_id()
                 rows[idx] = json.dumps(i, separators=(',',':'))
         self._write_strings(rows)
 
@@ -110,20 +126,20 @@ class Table():
         Cleans the whole database
         '''
         tmp = self.path + "tmp"
-        os.rename(self.path, tmp)
+        # os.rename(self.path, tmp)
         new_db = ""
-        f = open(tmp, "r")
+        f = open(self.path, "r")
         while True:
             line = f.readline()
             typ = self._check_entry(line)
             if typ == 1:
                 continue
             if typ == 2:
-                with open(self.path, "w") as f:
+                with open(tmp, "w") as f:
                     f.write(new_db)
                     break
             new_db += line
-        os.remove(tmp)
+        os.replace(tmp, self.path)
     
     def all(self):
         return self.search(lambda x: True)
@@ -152,3 +168,9 @@ class Table():
         if entry[:2] == "::":
             return 1
         return 0
+    
+    def _get_new_id(self):
+        next_id = int(open(self.id_path, "r").read())
+        with open(self.id_path, "w") as f:
+            f.write(str(next_id + 1))
+        return next_id
