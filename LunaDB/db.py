@@ -22,9 +22,16 @@ class LunaDB():
     ###### Root table link methods
     
     def insert(self, row, strict = True):
+        '''
+        Inserts a new document to table
+        If you use strict = False you can use it as insert_or_skip
+        '''
         self.root_table.insert(row, strict)
 
     def insert_multiple(self, rows, strict = True):
+        '''
+        Insert multiple documents to table
+        '''
         self.root_table.insert_multiple(rows, strict)
     
     def delete(self, filter_function, auto_clean = True):
