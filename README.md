@@ -10,12 +10,34 @@ Main features from LunaDB:
 * Even more tiny: LunaDB has less than 500 lines of code, without unittests  
 Important: LunaDB stores the data in multiple files located in one folder!
 ## Supported Python Versions
-LunaDB supports only Python 3, there is no Python 2 support. Python 2 is dying anyway and shouldn't be used.
+LunaDB supports only Python 3, there is no Python 2 support and there won't be any. As it is using `os.replace()` it needs at least Python 3.3 to run. Newer versions should be no problem. I use this module on Windows 10 and Debian Strech, it should run on any OS, if not feel free to open an issue.
 
 ## Example Usage
 ```python
 from LunaDB import LunaDB
 db = LunaDB("relative/path/to/database")
-table = db.table("example_table", id_field = "id")
+
+# If you are not giving an specific field, which will be unique, an automatic id_field will be used
+character = db.table("character")
+city = db.table("city", id_field="name")
+
+# If strict is True it will throw an error if there is duplicated entry. Otherwise it will just skip the entry.
+character.insert({"name": "Tristan", "age": 21}, strict = True)
+character.insert({"name": "Isolt", "age": 19}, strict = False)
+
+# To insert multiple entries at once, use insert_multiple
+city.insert_multiple([{"name":"London"}, {"name": "Manchester"}])
 ```
-The best way to use LunaDB is with tables. 
+### Searching for entries
+Searching works with filter functions. The search method takes a function which returns `True` when the entry should be in the response. This filter function can be defined seperatly or with the lambda statement.
+```python
+res = character.search(lambda entry: entry["age"] == 21)
+# res = [{"name":"Tristan", "age": 21, "_id": 0}]
+res = character.search(lambda entry: entry["age"] < 22)
+# res = [{"name": "Tristan", "age": 21, "_id": 0}, {"Isolt", "age":19, "_id":1}]
+# The "_id" field is the auto_increment identifier
+res = city.search(lambda entry: entry["name"] == "London")
+# res = [{"name": "London"}]
+```
+### Update
+The update

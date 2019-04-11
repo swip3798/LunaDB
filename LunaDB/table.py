@@ -43,14 +43,13 @@ class Table():
         Insert multiple documents to table
         '''
         for idx, i in enumerate(rows):
-            if strict:
-                res = self.search(lambda x: x[self.id_field] == i[self.id_field])
-            else:
-                res = []
+            res = self.search(lambda x: x[self.id_field] == i[self.id_field])
             if len(res) == 0:
                 if self.auto_id:
                     i["_id"] = self._get_new_id()
                 rows[idx] = json.dumps(i, separators=(',',':'))
+            elif strict:
+                raise DuplicateEntries
         self._write_strings(rows)
 
     def update(self, row, auto_clean = True, strict = True):

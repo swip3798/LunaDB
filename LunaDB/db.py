@@ -35,7 +35,10 @@ class LunaDB():
         self.root_table.insert_multiple(rows, strict)
 
     def update(self, row, auto_clean = True, strict = True):
-        self.root_table.update(row, auto_clean=auto_clean, strict = True)
+        self.root_table.update(row, auto_clean=auto_clean, strict = strict)
+
+    def upsert(self, row, auto_clean = True):
+        self.root_table.upsert(row, auto_clean=auto_clean)
     
     def delete(self, filter_function, auto_clean = True):
         self.root_table.delete(filter_function, auto_clean)
