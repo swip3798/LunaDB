@@ -1,11 +1,9 @@
 from LunaDB import LunaDB
 
 db = LunaDB("test")
-table = db.table("id_tests")
+table = db.table("delete_test")
 
 
-table.insert({"Hi":"oi2joidjoi", "joidajoi":1})
-rows = [
-    {"adijw":"djsaoi"}, {"djaoidjw": "djoiajdwoi"}
-]
-table.insert_multiple(rows)
+table.insert({"iojsdoija":"jdaojdw"})
+table.insert({"saoijdiowj":2})
+table.delete(lambda x: x["_id"] == 0)

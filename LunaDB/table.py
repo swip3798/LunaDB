@@ -126,20 +126,20 @@ class Table():
         Cleans the whole database
         '''
         tmp = self.path + "tmp"
-        os.rename(self.path, tmp)
+        # os.rename(self.path, tmp)
         new_db = ""
-        f = open(tmp, "r")
+        f = open(self.path, "r")
         while True:
             line = f.readline()
             typ = self._check_entry(line)
             if typ == 1:
                 continue
             if typ == 2:
-                with open(self.path, "w") as f:
+                with open(tmp, "w") as f:
                     f.write(new_db)
                     break
             new_db += line
-        os.remove(tmp)
+        os.replace(tmp, self.path)
     
     def all(self):
         return self.search(lambda x: True)
