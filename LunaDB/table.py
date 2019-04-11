@@ -7,9 +7,19 @@ class Table():
     def __init__(self, path, name, id_field = None):
         self.name = name
         self.id_field = id_field
+        if self.id_field == None:
+            self.auto_id = True
+            self.id_field = "_id"
+        else:
+            self.auto_id = False
         self.path = path + name
+        self.id_path = path + "ids/" + name 
         if not os.path.isfile(self.path):
             open(self.path, "w").close()
+        if not os.path.isfile(self.id_path) and self.auto_id:
+            f = open(self.id_path, "w")
+            f.write("0")
+            f.close()
 
     def insert(self, row, strict = True):
         '''
@@ -18,6 +28,8 @@ class Table():
         '''
         res = self.search(lambda x: x[self.id_field] == row[self.id_field])
         if len(res) == 0:
+            if self.auto_id:
+                row["_id"] = self._get_new_id()
             entry = json.dumps(row, separators=(',',':'))
             self._write_string(entry)
         elif strict:
@@ -34,6 +46,8 @@ class Table():
             else:
                 res = []
             if len(res) == 0:
+                if self.auto_id:
+                    i["_id"] = self._get_new_id()
                 rows[idx] = json.dumps(i, separators=(',',':'))
         self._write_strings(rows)
 
@@ -152,3 +166,9 @@ class Table():
         if entry[:2] == "::":
             return 1
         return 0
+    
+    def _get_new_id(self):
+        next_id = int(open(self.id_path, "r").read())
+        with open(self.id_path, "w") as f:
+            f.write(str(next_id + 1))
+        return next_id

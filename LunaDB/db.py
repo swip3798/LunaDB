@@ -5,8 +5,11 @@ class LunaDB():
     def __init__(self, name):
         self.name = name
         self.path = name + "/"
+        self.id_path = self.path + "ids/"
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
+        if not os.path.isdir(self.id_path):
+            os.mkdir(self.id_path)
         self.root_table = self.table("#")
         
     def table(self, name, id_field = None):
