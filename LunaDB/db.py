@@ -33,6 +33,9 @@ class LunaDB():
         Insert multiple documents to table
         '''
         self.root_table.insert_multiple(rows, strict)
+
+    def update(self, row, auto_clean = True, strict = True):
+        self.root_table.update(row, auto_clean=auto_clean, strict = True)
     
     def delete(self, filter_function, auto_clean = True):
         self.root_table.delete(filter_function, auto_clean)
