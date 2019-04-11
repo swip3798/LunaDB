@@ -24,7 +24,9 @@ class Table():
     def insert(self, row, strict = True):
         '''
         Inserts a new document to table
-        If you use strict = False you can use it as insert_or_skip
+        If you use strict = False you can use it as an insert or skip
+
+        If you use auto_id, do not use the field "_id", it will be overwritten with the autoincrement id
         '''
         res = self.search(lambda x: x[self.id_field] == row[self.id_field])
         if len(res) == 0:
