@@ -3,8 +3,18 @@ import os
 from .exceptions import DuplicateEntries, DocumentNotFound
 
 class Table():
+    '''
+    Represents a table holding documents in LunaDB
+    '''
 
     def __init__(self, path, name, auto_clean_buffer, id_field = None):
+        '''
+        Parameters:
+        path : String => The path were the table should be saved
+        name : String => Name of the table, also name of the file in the database dir
+        auto_clean_buffer : boolean => How many space can be used by disabled entries
+        id_field : String => If there is a manual unique id field, it can be named here, otherwise an autoincremented _id field will be used
+        '''
         self.name = name
         self.id_field = id_field
         self.auto_clean_buffer = auto_clean_buffer
