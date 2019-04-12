@@ -40,4 +40,38 @@ res = city.search(lambda entry: entry["name"] == "London")
 # res = [{"name": "London"}]
 ```
 ### Update
-The update
+The update uses the id field to identify the document and will replace it.
+```python
+res = character.search(lambda entry: entry["name"] == "Tristan")
+# res = [{"name":"Tristan", "age": 21, "_id": 0}]
+res["age"] = 22
+character.update(res, auto_clean = True)
+res = character.search(lambda entry: entry["name"] == "Tristan")
+# res = [{"name":"Tristan", "age": 22, "_id": 0}]
+```
+The `auto_clean` parameter is present in every method that modifies or deletes existing data. Without auto_clean LunaDB does not delete the data from the database, in fact it is just disabling them. Only if the database is cleaned afterwards, the disabled entries will get deleted. If `auto_clean` is `False` you need to clean the table with the `table.clean()` method manually if you want to save space. If `auto_clean` is `True`, the table will automatically cleared when the disabled lines exceed the `auto_clean_buffer`, which is per default 5MB per table. `auto_clean_buffer` can be set with the creation of the database object. Per default `auto_clean` is `True`. 
+### Delete
+The delete works the same way as search, every row which returns at the filter function `True` will be deleted. The `auto_clean` is the same as with update.
+```python
+res = character.search(lambda entry: entry["name"] == "Tristan")
+# res = [{"name":"Tristan", "age": 21, "_id": 0}]
+character.delete(lambda entry: entry["name"] == "Tristan", auto_clean = True)
+res = character.search(lambda entry: entry["name"] == "Tristan")
+# res = []
+```
+### Additional concepts
+#### Insert or update
+```python
+row = {"name":"Tristan", "age": 17}
+character.upsert(row)
+```
+#### Insert or skip
+```python
+row = {"name":"Tristan", "age": 17}
+# With strict = False, duplicated entries won't throw an exception
+character.insert(row, strict = False)
+```
+
+## Additional documentation
+Look at the module reference.
+
