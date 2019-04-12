@@ -1,6 +1,6 @@
 from LunaDB import LunaDB
 
-db = LunaDB("test")
+db = LunaDB("test", auto_clean_buffer=10000)
 table = db.table("delete_test")
 
 
