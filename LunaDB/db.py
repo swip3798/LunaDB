@@ -2,10 +2,11 @@ import os
 from .table import Table
 
 class LunaDB():
-    def __init__(self, name):
+    def __init__(self, name, auto_clean_buffer = 5000000):
         self.name = name
         self.path = name + "/"
         self.id_path = self.path + "ids/"
+        self.auto_clean_buffer = auto_clean_buffer
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
         if not os.path.isdir(self.id_path):
@@ -13,7 +14,7 @@ class LunaDB():
         self.root_table = self.table("#")
         
     def table(self, name, id_field = None):
-        return Table(self.path, name, id_field = id_field)
+        return Table(self.path, name, id_field = id_field, auto_clean_buffer = self.auto_clean_buffer)
 
     def drop_table(self, name):
         del_path = self.path + name

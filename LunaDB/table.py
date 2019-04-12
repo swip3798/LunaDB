@@ -4,9 +4,11 @@ from .exceptions import DuplicateEntries, DocumentNotFound
 
 class Table():
 
-    def __init__(self, path, name, id_field = None):
+    def __init__(self, path, name, auto_clean_buffer, id_field = None):
         self.name = name
         self.id_field = id_field
+        self.auto_clean_buffer = auto_clean_buffer
+        self.buffer = 0
         if self.id_field == None:
             self.auto_id = True
             self.id_field = "_id"
@@ -82,9 +84,10 @@ class Table():
                         f.write("::".encode("utf-8"))
                         f.seek(len(line) - 2, 1)
                         res = True
+                        self.buffer += len(line)
                 except:
                     pass
-        if auto_clean:
+        if auto_clean and self.buffer > self.auto_clean_buffer:
             self.clean()
         return res
     
@@ -139,6 +142,7 @@ class Table():
                     break
             new_db += line
         os.replace(tmp, self.path)
+        self.buffer = 0
     
     def all(self):
         return self.search(lambda x: True)
