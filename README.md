@@ -73,5 +73,5 @@ character.insert(row, strict = False)
 ```
 
 ## Additional documentation
-Look at the module reference.
+Look at the [module reference](https://github.com/swip3798/LunaDB/blob/Add-documentation/docs/REFERENCE.md).
 
